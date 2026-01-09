@@ -1,0 +1,12 @@
+[project]
+name = "dr-lawyer-legal-intake-assistant"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.128.0",
+    "langchain>=1.2.3",
+    "langgraph>=1.0.5",
+    "uvicorn>=0.40.0",
+]
