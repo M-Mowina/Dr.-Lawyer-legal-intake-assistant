@@ -1,6 +1,9 @@
-def main():
-    print("Hello from dr-lawyer-legal-intake-assistant!")
+from fastapi import FastAPI
+from dotenv import load_dotenv
+load_dotenv(".env")
 
+from routes import base
 
-if __name__ == "__main__":
-    main()
+app = FastAPI()
+
+app.include_router(base.base_router)
