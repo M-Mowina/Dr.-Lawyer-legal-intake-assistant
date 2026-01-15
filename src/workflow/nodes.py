@@ -20,17 +20,18 @@ llm = ChatOpenAI(
 )
 
 # ----- Ask questions node -----
-def generate_questions_node(state: AgentState) -> dict:
+
+async def generate_questions_node(state: AgentState) -> dict:
     """
     Generates 1–3 new questions or decides we're ready.
     Uses create_react_agent so you can later plug in real tools (RAG/legal lookup).
     Pure node → returns delta only.
     """
-    if state.get("is_ready", False) or state.get("is_complete", False):
+    if state.is_ready or state.is_complete:
         return {}  # already done
 
     # iteration count for tracking
-    iteration_count = state.get("iteration_count")
+    iteration_count = state.iteration_count
     iteration_count += 1
     if iteration_count >= 3:
         try:
@@ -48,9 +49,9 @@ def generate_questions_node(state: AgentState) -> dict:
     # Build agent (you can move this outside / inject if preferred)
     prompt = ASK_QUESTIONS_PROMPT.invoke(
       {
-          "initial_description": state['initial_description'],
-          "previous_questions": "\n- " + "\n- ".join(state["answers_so_far"]["questions"]) if state["answers_so_far"]["questions"] else "None yet.",
-          "previous_answers":   "\n- " + "\n- ".join(state["answers_so_far"]["answers"])   if state["answers_so_far"]["answers"] else "None provided.",
+          "initial_description": state.initial_description,
+          "previous_questions": "\n- " + "\n- ".join(state.answers_so_far.questions) if state.answers_so_far.questions else "None yet.",
+          "previous_answers":   "\n- " + "\n- ".join(state.answers_so_far.answers)   if state.answers_so_far.answers else "None provided.",
       })
 
     agent = create_agent(
@@ -61,17 +62,18 @@ def generate_questions_node(state: AgentState) -> dict:
       )
 
     try:
-        parsed = agent.invoke({"messages": [{"role": "user", "content": "Please continue the intake process now."}]})["structured_response"]
-
+        parsed = (await agent.ainvoke({"messages": [{"role": "user", "content": "Please continue the intake process now."}]}))["structured_response"]
+        # print('Agent output: ', parsed, '\n\n')
         new_questions = parsed.get("questions", [])
         reasoning = parsed.get("reasoning", "")
         is_complete_now = parsed.get("is_complete", False)
 
         update = {
+            "reasoning": reasoning,
             "answers_so_far": {
                 "questions": new_questions,   # auto-appends thanks to reducer
             },
-            "iteration_count": state["iteration_count"] + 1,
+            "iteration_count": iteration_count,
             "is_ready": is_complete_now,      # question node can set this
             "is_complete": False,             # only final node sets true
         }
@@ -87,28 +89,29 @@ def generate_questions_node(state: AgentState) -> dict:
         logger.exception("Question generation failed")
         return {
             "error": f"Question generation failed: {str(e)}",
-            "iteration_count": state["iteration_count"] + 1,
+            "iteration_count": state.iteration_count,
         }
 
 # ----- Finalize Description Node -----
-def generate_final_description_node(state: AgentState) -> dict:
+async def generate_final_description_node(state: AgentState) -> dict:
     """
     Only called when is_ready == True.
     Produces the polished professional description.
     Can also use agent/tools later (legal context, statutes...).
     """
-    if not state.get("is_ready"):
+    if not state.is_ready:
         return {"error": "Final node called without is_ready=True"}
 
     prompt = FINALIZE_DESCRIPTION_PROMPT.invoke(
       {
-          "initial_description": state['initial_description'],
-          "all_questions": "\n- " + "\n- ".join(state["answers_so_far"]["questions"]) if state["answers_so_far"]["questions"] else "None yet.",
-          "all_answers":   "\n- " + "\n- ".join(state["answers_so_far"]["answers"])   if state["answers_so_far"]["answers"] else "None provided.",
+          "initial_description": state.initial_description,
+          "all_questions": "\n- " + "\n- ".join(state.answers_so_far.questions) if state.answers_so_far.questions else "None yet.",
+          "all_answers":   "\n- " + "\n- ".join(state.answers_so_far.answers)   if state.answers_so_far.answers else "None provided.",
       }).messages[-1].content
+    # print(f'Prompt: {prompt}')
 
     try:
-        final_text = llm.invoke(prompt).content
+        final_text = (await llm.ainvoke(prompt)).content
         print(f'Final Description: {final_text}')
         return {
             "final_description": final_text.content if hasattr(final_text, "content") else str(final_text),
@@ -117,14 +120,17 @@ def generate_final_description_node(state: AgentState) -> dict:
         }
 
     except Exception as e:
+        logger.exception("Final description generation failed")
         return {"error": f"Final description generation failed: {str(e)}"}
 
 # ----- Dummy Get Answers Node -----
-def get_answers(state: AgentState): # This is used just for better workflow visualization
+async def get_answers(state: AgentState):
   pass
 
 # ----- Test the nodes -----
 if __name__ == "__main__":
     import asyncio
-    result = asyncio.run(ask_questions_node("Some one assaulted me and i want to raise a case!", "No previous answers yet."))
+    
+    # AgentState automatically initializes answers_so_far with empty lists
+    result = asyncio.run(generate_questions_node(AgentState("Some one assaulted me and i want to raise a case!")))
     print(result)
