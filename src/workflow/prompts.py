@@ -1,7 +1,4 @@
 from langchain_core.prompts import ChatPromptTemplate
-from typing import Generic, TypeVar
-
-SchemaT = TypeVar("SchemaT")
 
 # Prompt for asking clarifying questions
 ASK_QUESTIONS_PROMPT = ChatPromptTemplate(
@@ -38,13 +35,18 @@ ASK_QUESTIONS_PROMPT = ChatPromptTemplate(
 
 
 # Prompt for finalizing the description
-FINALIZE_DESCRIPTION_PROMPT = """
+FINALIZE_DESCRIPTION_PROMPT = ChatPromptTemplate(
+    [
+        ("system","""
 You are an AI legal assistant. Based on the following information, create a professional, comprehensive case description that a lawyer could use to understand the situation:
 
 Initial description: {initial_description}
 
-User's answers to clarifying questions:
-{all_answers}
+Questions and answers:
+  Questions:
+    {all_questions}
+  Answers:
+    {all_answers}
 
 Your task is to synthesize this information into a clear, professional case summary that includes:
 1. The key facts of the situation
@@ -57,6 +59,9 @@ Format your response as a well-structured professional summary. Be thorough but 
 IMPORTANT DISCLAIMERS TO INCLUDE AT THE END:
 This is an AI-generated summary based solely on the information provided. It is NOT legal advice. Consult a qualified attorney for legal guidance.
 """
+      )
+  ]
+)
 
 # Structured output format for question-asking
 STRUCTURED_QUESTION_RESPONSE_FORMAT = {
@@ -80,19 +85,3 @@ STRUCTURED_QUESTION_RESPONSE_FORMAT = {
     },
     "required": ["reasoning", "questions", "is_complete"]
 }
-
-contact_info_schema = {
-    "type": "object",
-    "description": "Contact information for a person.",
-    "properties": {
-        "name": {"type": "string", "description": "The name of the person"},
-        "email": {"type": "string", "description": "The email address of the person"},
-        "phone": {"type": "string", "description": "The phone number of the person"}
-    },
-    "required": ["name", "email", "phone"]
-}
-
-class ProviderStrategy(Generic[SchemaT]):
-    def __init__(self, schema: SchemaT, strict: bool | None = None):
-        self.schema = schema
-        self.strict = strict
