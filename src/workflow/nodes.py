@@ -33,7 +33,7 @@ async def generate_questions_node(state: AgentState) -> dict:
     # iteration count for tracking
     iteration_count = state.iteration_count
     iteration_count += 1
-    if iteration_count >= 3:
+    if iteration_count > 3:
         try:
             logger.info("Max iterations reached, stopping questions generation")
             return {
@@ -50,8 +50,8 @@ async def generate_questions_node(state: AgentState) -> dict:
     prompt = ASK_QUESTIONS_PROMPT.invoke(
       {
           "initial_description": state.initial_description,
-          "previous_questions": "\n- " + "\n- ".join(state.answers_so_far.questions) if state.answers_so_far.questions else "None yet.",
-          "previous_answers":   "\n- " + "\n- ".join(state.answers_so_far.answers)   if state.answers_so_far.answers else "None provided.",
+          "previous_questions": "\n- " + "\n- ".join(state.questions) if state.questions else "None yet.",
+          "previous_answers":   "\n- " + "\n- ".join(state.answers)   if state.answers else "None provided.",
       })
 
     agent = create_agent(
@@ -70,9 +70,7 @@ async def generate_questions_node(state: AgentState) -> dict:
 
         update = {
             "reasoning": reasoning,
-            "answers_so_far": {
-                "questions": new_questions,   # auto-appends thanks to reducer
-            },
+            "questions": new_questions,   # auto-appends thanks to reducer
             "iteration_count": iteration_count,
             "is_ready": is_complete_now,      # question node can set this
             "is_complete": False,             # only final node sets true
@@ -105,8 +103,8 @@ async def generate_final_description_node(state: AgentState) -> dict:
     prompt = FINALIZE_DESCRIPTION_PROMPT.invoke(
       {
           "initial_description": state.initial_description,
-          "all_questions": "\n- " + "\n- ".join(state.answers_so_far.questions) if state.answers_so_far.questions else "None yet.",
-          "all_answers":   "\n- " + "\n- ".join(state.answers_so_far.answers)   if state.answers_so_far.answers else "None provided.",
+          "all_questions": "\n- " + "\n- ".join(state.questions) if state.questions else "None yet.",
+          "all_answers":   "\n- " + "\n- ".join(state.answers)   if state.answers else "None provided.",
       }).messages[-1].content
     # print(f'Prompt: {prompt}')
 
@@ -131,6 +129,6 @@ async def get_answers(state: AgentState):
 if __name__ == "__main__":
     import asyncio
     
-    # AgentState automatically initializes answers_so_far with empty lists
+    # AgentState automatically initializes questions and answers with empty lists
     result = asyncio.run(generate_questions_node(AgentState("Some one assaulted me and i want to raise a case!")))
     print(result)
