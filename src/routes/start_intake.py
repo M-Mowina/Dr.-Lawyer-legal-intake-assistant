@@ -1,0 +1,91 @@
+from unittest import result
+from fastapi import APIRouter, HTTPException, Body
+from pydantic import BaseModel
+from typing import List, Optional
+from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
+
+from workflow import graph, DB_URL, AgentState
+
+# Create request model
+class StartIntakeRequest(BaseModel):
+    initial_description: str
+
+# Create router
+start_intake_router = APIRouter(prefix="/api/v1")
+
+# ----- Start Intake -----
+@start_intake_router.post("/intake/start/{session_id}")
+async def start_intake(
+    session_id: str,
+    request: StartIntakeRequest
+):
+    """
+    User provides initial case description → agent generates first questions.
+    Returns questions + session state.
+    """
+    config = {
+        "configurable": {"thread_id": session_id},
+    }
+
+    try:
+        # Create initial state
+        initial_state = AgentState(
+            initial_description=request.initial_description
+        )
+        
+        async with AsyncPostgresSaver.from_conn_string(DB_URL) as checkpointer:
+            # Run the workflow until it hits the interrupt point
+            graph.checkpointer = checkpointer
+            await graph.ainvoke(initial_state, config=config)
+            
+            # Get the current state after the interruption
+            current_state = await graph.aget_state(config)
+            return current_state.values
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ----- Intake Answers -----
+class IntakeAnswersRequest(BaseModel):
+    answers: List[str]
+
+@start_intake_router.post("/intake/answers/{session_id}")
+async def intake_answers(
+    session_id: str,
+    request: IntakeAnswersRequest
+):
+    """
+    User provides answers to questions → agent generates next questions or finalizes.
+    Returns questions or final state.
+    """
+    config = {
+        "configurable": {"thread_id": session_id},
+    }
+    try:
+        async with AsyncPostgresSaver.from_conn_string(DB_URL) as checkpointer:
+            graph.checkpointer = checkpointer
+            
+            # Update the state with the user's answers
+            await graph.aupdate_state(config, {"answers": request.answers})
+            result = await graph.ainvoke(None, config=config)
+            return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ----- Get Intake Status -----
+@start_intake_router.get("/intake/{session_id}")
+async def get_intake_status(session_id: str):
+    """
+    Get the current status of the intake process.
+    """
+    config = {
+        "configurable": {"thread_id": session_id},
+    }
+    try:
+        async with AsyncPostgresSaver.from_conn_string(DB_URL) as checkpointer:
+            graph.checkpointer = checkpointer
+            current_state = await graph.aget_state(config)
+            return current_state.values
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+

@@ -33,7 +33,7 @@ async def generate_questions_node(state: AgentState) -> dict:
     # iteration count for tracking
     iteration_count = state.iteration_count
     iteration_count += 1
-    if iteration_count > 3:
+    if iteration_count >= 3:  # Changed from > to >= to match the routing condition
         try:
             logger.info("Max iterations reached, stopping questions generation")
             return {
@@ -121,9 +121,16 @@ async def generate_final_description_node(state: AgentState) -> dict:
         logger.exception("Final description generation failed")
         return {"error": f"Final description generation failed: {str(e)}"}
 
-# ----- Dummy Get Answers Node -----
+# ----- Get Answers Node -----
 async def get_answers(state: AgentState):
-  pass
+    """
+    Processes user answers and returns updated state.
+    This node is interrupted, so answers are provided externally.
+    """
+    # This node is just a placeholder for the interrupt.
+    # The actual processing happens when answers are submitted via the API.
+    # The answers should already be in the state by this point.
+    return {"is_complete": state.is_complete, "is_ready": state.is_ready}
 
 # ----- Test the nodes -----
 if __name__ == "__main__":

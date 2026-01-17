@@ -1,2 +1,3 @@
 """ Workflow module for the legal assistant application """
-from .graph import graph
+from .graph import graph, DB_URL
+from .state import AgentState

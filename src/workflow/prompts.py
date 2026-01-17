@@ -18,14 +18,15 @@ ASK_QUESTIONS_PROMPT = ChatPromptTemplate(
             {{
                 "reasoning": "Brief explanation of why you're asking these questions",
                 "questions": ["question 1", "question 2", "question 3"],
-                "is_complete": false
+                "is_ready": false
             }}
 
             IMPORTANT:
+            - Respond in the initial_description's language.
             - Ask specific, factual questions
             - Do not provide legal advice
             - Do not make assumptions about the law
-            - If you have sufficient information to create a comprehensive case summary, set is_complete to true
+            - If you have sufficient information to create a comprehensive case summary, set is_ready to true
             - Limit to 3 questions max to avoid overwhelming the user
             - Make sure questions are directly related to the legal matter at hand
             """)
@@ -78,7 +79,7 @@ STRUCTURED_QUESTION_RESPONSE_FORMAT = {
             },
             "description": "1-3 specific, relevant questions to ask the user"
         },
-        "is_complete": {
+        "is_ready": {
             "type": "boolean",
             "description": "True if you have enough information to create a final description, false otherwise"
         }

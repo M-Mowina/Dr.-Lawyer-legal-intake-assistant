@@ -6,7 +6,6 @@ from langgraph.graph import StateGraph, START, END
 from .state import AgentState
 from langgraph.checkpoint.memory import MemorySaver
 from .nodes import generate_questions_node, generate_final_description_node, get_answers
-import urllib.parse
 from langgraph.checkpoint.postgres import PostgresSaver
 
 # After questions (meaning after user answers are processed) → decide whether to ask more questions or finalize
@@ -31,11 +30,10 @@ def route_from_generate_questions(state: AgentState) -> str:
 
 
 # ----- PostgreSQL Checkpointer -----
-DB_PASSWORD_ENCODED = urllib.parse.quote_plus(getenv("DB_PASSWORD"))
-DB_URL = f"postgresql://postgres.trmcjhazbucmbiekzyih:{DB_PASSWORD_ENCODED}@aws-1-eu-west-1.pooler.supabase.com:6543/postgres"
+DB_URL = f"postgresql://postgres.trmcjhazbucmbiekzyih:{getenv('DB_PASSWORD')}@aws-1-eu-west-1.pooler.supabase.com:5432/postgres"
 
 with PostgresSaver.from_conn_string(DB_URL) as checkpointer: 
-    # await checkpointer.setup()
+    # await checkpointer.setup() # <- Run once
 
     # ----- LangGraph Workflow Structure -----
     workflow = StateGraph(state_schema=AgentState)
