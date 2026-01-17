@@ -22,7 +22,7 @@ ASK_QUESTIONS_PROMPT = ChatPromptTemplate(
             }}
 
             IMPORTANT:
-            - Respond in the initial_description's language.
+            - Respond in the initial_description's language for questions and reasoning.
             - Ask specific, factual questions
             - Do not provide legal advice
             - Do not make assumptions about the law

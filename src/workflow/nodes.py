@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 llm = ChatOpenAI(
     api_key=getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1",
-    model="x-ai/grok-4.1-fast",
+    model="anthropic/claude-haiku-4.5",
 )
 
 # ----- Ask questions node -----

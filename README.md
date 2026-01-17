@@ -172,23 +172,31 @@ Dr.-Lawyer-legal-intake-assistant/
 
 ### Environment Variables
 
+Create a `.env` file in the `src` directory with the following variables (see `.env.example` for reference):
+
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `OPENROUTER_API_KEY` | API key for OpenRouter/LLM provider | Yes |
 | `APP_NAME` | Application name | No |
 | `APP_VERSION` | Application version | No |
+| `DB_PASSWORD` | Database password (required for PostgreSQL checkpointer) | Yes |
 
 ### LLM Configuration
 
-The default configuration uses Grok via OpenRouter. To change the model, edit `src/workflow/nodes.py`:
+The default configuration uses Anthropic Claude Haiku 4.5 via OpenRouter. To change the model, edit `src/workflow/nodes.py`:
 
 ```python
 llm = ChatOpenAI(
     api_key=getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1",
-    model="x-ai/grok-4.1-fast",  # Change model here
+    model="anthropic/claude-haiku-4.5",  # Change model here
 )
 ```
+
+**Alternative models** that work well with this application:
+- `x-ai/grok-4.1-fast` - xAI Grok model
+- `openai/gpt-4o-mini` - OpenAI GPT-4 mini model
+- `google/gemini-flash-2.0` - Google Gemini Flash model
 
 ## 🧪 Development
 
@@ -221,21 +229,13 @@ This project is currently under active development. Planned enhancements include
 - Case history and persistence
 - Advanced analytics and reporting
 
-## ⚠️ Disclaimer
-
-This tool is designed to assist with information gathering and does NOT provide legal advice. All outputs should be reviewed by qualified legal professionals. Users should consult with licensed attorneys for legal guidance specific to their situations.
-
-## 📄 License
-
-[Add your license information here]
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📧 Contact
 
-[Add your contact information here]
+mohammedmowina@gmail.com
 
 ---
 
