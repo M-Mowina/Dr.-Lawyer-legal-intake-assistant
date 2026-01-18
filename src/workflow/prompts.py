@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 
-# Prompt for asking clarifying questions
+# ----- Prompt for asking clarifying questions -----
 ASK_QUESTIONS_PROMPT = ChatPromptTemplate(
     [
         ("system", 
@@ -35,7 +35,7 @@ ASK_QUESTIONS_PROMPT = ChatPromptTemplate(
 
 
 
-# Prompt for finalizing the description
+# ----- Prompt for finalizing the description -----
 FINALIZE_DESCRIPTION_PROMPT = ChatPromptTemplate(
     [
         ("system","""
@@ -64,6 +64,26 @@ This is an AI-generated summary based solely on the information provided.
   ]
 )
 
+# ----- Prompt for lawyer's offer refinement -----
+LAWYER_OFFER_REFINEMENT_PROMPT = ChatPromptTemplate(
+    [
+        ("system", """
+You are an expert legal marketing consultant who specializes in refining lawyer service offers to make them more professional, compelling, and appealing to potential clients.
+
+Take the initial lawyer's offer and rephrase it to be:
+- More professional and polished
+- More appealing to clients
+- Clear and persuasive
+- Maintaining all original terms and conditions
+
+Original Offer: {lawyer_offer}
+
+Provide your refined version that enhances the language while preserving the offer's substance.
+Output only the refined offer.
+""")
+    ]
+)
+
 # Structured output format for question-asking
 STRUCTURED_QUESTION_RESPONSE_FORMAT = {
     "type": "object",
@@ -86,3 +106,4 @@ STRUCTURED_QUESTION_RESPONSE_FORMAT = {
     },
     "required": ["reasoning", "questions", "is_complete"]
 }
+
