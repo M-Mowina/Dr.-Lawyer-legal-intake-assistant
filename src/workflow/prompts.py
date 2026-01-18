@@ -55,7 +55,7 @@ Your task is to synthesize this information into a clear, professional case summ
 3. Any relevant timelines or important details
 4. The client's apparent goals or concerns
 
-Format your response as a well-structured professional summary. Be thorough but concise. Do NOT provide legal advice or recommendations. Simply summarize the facts as presented.
+Format your response as a well-structured professional summary. Be thorough but concise. Do NOT provide legal advice or recommendations. Simply summarize the facts as presented. Output in the language of the answer.
 
 IMPORTANT DISCLAIMERS TO INCLUDE AT THE END:
 This is an AI-generated summary based solely on the information provided.
