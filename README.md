@@ -47,16 +47,29 @@ The agent maintains state across interactions including:
 
 - Python 3.11 or higher
 - OpenRouter API key (or compatible LLM provider)
+- Supabase Postgress DB Password
 
 ### Installation
 
-1. Clone the repository:
+1. Install uv package manager (if not already installed):
+
+For Mac and Linux:
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+For Windows (PowerShell):
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+2. Clone the repository:
 ```bash
 git clone <repository-url>
 cd Dr.-Lawyer-legal-intake-assistant
 ```
 
-2. Install dependencies using uv (recommended):
+3. Install dependencies using uv (recommended):
 ```bash
 cd src
 uv sync
@@ -68,7 +81,7 @@ cd src
 pip install -r requirements.txt
 ```
 
-3. Configure environment variables:
+4. Configure environment variables:
 ```bash
 cp src/.env.example src/.env
 ```
@@ -78,6 +91,7 @@ Edit `src/.env` and add your configuration:
 OPENROUTER_API_KEY=your_api_key_here
 APP_NAME=Legal Intake Assistant
 APP_VERSION=0.1.0
+DB_PASSWORD=your_BD_password
 ```
 
 ### Running the API
@@ -92,6 +106,8 @@ The API will be available at `http://localhost:8000`
 
 ## 📡 API Endpoints
 
+For detailed API examples and testing, see the [Postman Collection](./assets/Legal%20Intake%20Assistant.postman_collection.json) in the assets folder.
+
 ### Health Check
 ```http
 GET /api/v1/
@@ -99,43 +115,62 @@ GET /api/v1/
 
 Returns application name and version.
 
-**Response:**
-```json
-{
-  "app_name": "Legal Intake Assistant",
-  "app_version": "0.1.0"
-}
-```
-
-### Ask Questions
+### Start Legal Intake
 ```http
-POST /api/v1/ask-questions
+POST /api/v1/intake/start/{session_id}
 ```
 
-Generates clarifying questions based on the initial description and previous answers.
+Starts the legal intake process with an initial case description.
 
 **Request Body:**
 ```json
 {
-  "initial_description": "Someone assaulted me and I want to raise a case",
-  "previous_answers": ""
+  "initial_description": "مديري فالشغل بيتحرش بيا"
+}
+```
+
+### Submit Intake Answers
+```http
+POST /api/v1/intake/answers/{session_id}
+```
+
+Submits answers to the questions generated during intake.
+
+**Request Body:**
+```json
+{
+  "answers": [
+    "خارج مقر العمل",
+    "لا الرسايل على تليفوني مورتهاش لحد",
+    "مقيمة"
+  ]
+}
+```
+
+### Get Intake Status
+```http
+GET /api/v1/intake/{session_id}
+```
+
+Retrieves the current status of the intake process.
+
+### Optimize Lawyer Offer
+```http
+POST /api/v1/optimize_offer
+```
+
+Takes a lawyer's offer and rephrases it to be more professional and appealing.
+
+**Request Body:**
+```json
+{
+  "offer": "I can take ur case for 1000 usd and insure u a 90% grante I will keep u out of jail"
 }
 ```
 
 **Response:**
-```json
-{
-  "status": "success",
-  "data": {
-    "reasoning": "Need to gather key facts about the incident",
-    "questions": [
-      "When did the assault occur?",
-      "Where did the incident take place?",
-      "Were there any witnesses present?"
-    ],
-    "is_complete": false
-  }
-}
+```text
+I can represent you in this case for a fee of $1,000 USD, with a strong likelihood of achieving a favorable outcome that keeps you out of legal custody.
 ```
 
 ## 🛠️ Technology Stack
