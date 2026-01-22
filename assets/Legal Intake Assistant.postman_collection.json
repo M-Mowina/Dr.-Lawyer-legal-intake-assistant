@@ -1,92 +1,128 @@
 {
-	"info": {
-		"_postman_id": "59aaa9cd-3fff-4e38-8e36-4db7d71ccb81",
-		"name": "Legal Intake Assistant",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "49787783",
-		"_collection_link": "https://m-mowina-5890040.postman.co/workspace/Mohamed-Mowina's-Workspace~10774895-42d4-41f7-8a02-a99280603e8e/collection/49787783-59aaa9cd-3fff-4e38-8e36-4db7d71ccb81?action=share&source=collection_link&creator=49787783"
-	},
-	"item": [
-		{
-			"name": "base",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{api}}/",
-					"host": [
-						"{{api}}"
-					],
-					"path": [
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Start Intake",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"initial_description\": \"مديري فالشغل بيتحرش بيا\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{api}}/intake/start/13",
-					"host": [
-						"{{api}}"
-					],
-					"path": [
-						"intake",
-						"start",
-						"13"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Intake Answers",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"answers\": [\r\n        \"خارج مقر العمل\",\r\n        \"لا الرسايل على تليفوني مورتهاش لحد\",\r\n        \"مقيمة\"\r\n    ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{api}}/intake/answers/14",
-					"host": [
-						"{{api}}"
-					],
-					"path": [
-						"intake",
-						"answers",
-						"14"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Intake State",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "59aaa9cd-3fff-4e38-8e36-4db7d71ccb81",
+    "name": "Legal Intake Assistant",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49787783",
+    "_collection_link": "https://go.postman.co/collection/49787783-59aaa9cd-3fff-4e38-8e36-4db7d71ccb81?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Check Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{api}}/",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Start Intake",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"initial_description\": \"مديري فالشغل بيتحرش بيا\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{api}}/intake/start/13",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "intake",
+            "start",
+            "13"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Intake Answers",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"answers\": [\r\n        \"خارج مقر العمل\",\r\n        \"لا الرسايل على تليفوني مورتهاش لحد\",\r\n        \"مقيمة\"\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{api}}/intake/answers/14",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "intake",
+            "answers",
+            "14"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Intake State",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{hostinger}}/intake/15",
+          "host": [
+            "{{hostinger}}"
+          ],
+          "path": [
+            "intake",
+            "15"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Optimize Offer",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"offer\": \"I can take ur case for 1000 usd and insure u a 90% grante I will keep u out of jail\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{api}}/optimize_offer",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "optimize_offer"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
 }
