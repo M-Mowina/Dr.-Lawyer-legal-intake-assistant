@@ -4,7 +4,6 @@ load_dotenv()
 
 from langgraph.graph import StateGraph, START, END
 from .state import AgentState
-from langgraph.checkpoint.memory import MemorySaver
 from .nodes import generate_questions_node, generate_final_description_node, get_answers
 from langgraph.checkpoint.postgres import PostgresSaver
 
@@ -14,7 +13,7 @@ def route_after_questions(state: AgentState) -> str:
         return END
     if state.is_ready:
         return "generate_final"
-    if state.iteration_count >= 3:  # safety
+    if state.iteration_count >= 6:  # safety
         return "generate_final"   # or END with partial
     return "generate_questions"       # loop back to generate more questions
 
@@ -23,7 +22,7 @@ def route_from_generate_questions(state: AgentState) -> str:
     if state.error:
         return END
     # If generate_questions_node set is_ready, or max iterations reached, go to final
-    if state.is_ready or state.iteration_count >= 3:
+    if state.is_ready or state.iteration_count >= 6:
         return "generate_final"
     # Otherwise, more questions were generated, so we need answers
     return "get_answers"

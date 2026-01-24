@@ -12,12 +12,12 @@ ASK_QUESTIONS_PROMPT = ChatPromptTemplate(
             Previous answers from the user:
             {previous_answers}
 
-            Your task is to ask 1-3 specific, relevant questions that will help clarify the legal situation. Focus on gathering facts that would be important for a lawyer to know.
+            Your task is to ask 1 specific, relevant questions that will help clarify the legal situation. Focus on gathering facts that would be important for a lawyer to know.
 
             Provide your response in the following JSON format:
             {{
                 "reasoning": "Brief explanation of why you're asking these questions",
-                "questions": ["question 1", "question 2", "question 3"],
+                "questions": ["question 1"],
                 "is_ready": false
             }}
 
@@ -27,7 +27,7 @@ ASK_QUESTIONS_PROMPT = ChatPromptTemplate(
             - Do not provide legal advice
             - Do not make assumptions about the law
             - If you have sufficient information to create a comprehensive case summary, set is_ready to true
-            - Limit to 3 questions max to avoid overwhelming the user
+            - Limit to 1 question max to avoid overwhelming the user
             - Make sure questions are directly related to the legal matter at hand
             """)
     ]
@@ -54,6 +54,7 @@ Your task is to synthesize this information into a clear, professional case summ
 2. The legal issues involved (without offering legal advice)
 3. Any relevant timelines or important details
 4. The client's apparent goals or concerns
+5. Write the case summary in the initial_description's language.
 
 Format your response as a well-structured professional summary. Be thorough but concise. Do NOT provide legal advice or recommendations. Simply summarize the facts as presented. Output in the language of the answer.
 
@@ -104,6 +105,6 @@ STRUCTURED_QUESTION_RESPONSE_FORMAT = {
             "description": "True if you have enough information to create a final description, false otherwise"
         }
     },
-    "required": ["reasoning", "questions", "is_complete"]
+    "required": ["reasoning", "questions", "is_ready"]
 }
 

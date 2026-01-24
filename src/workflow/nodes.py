@@ -33,7 +33,7 @@ async def generate_questions_node(state: AgentState) -> dict:
     # iteration count for tracking
     iteration_count = state.iteration_count
     iteration_count += 1
-    if iteration_count >= 3:  # Changed from > to >= to match the routing condition
+    if iteration_count >= 6:  # Changed from > to >= to match the routing condition
         try:
             logger.info("Max iterations reached, stopping questions generation")
             return {
