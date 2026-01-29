@@ -85,6 +85,39 @@ Output only the refined offer.
     ]
 )
 
+
+# ----- Prompt for editing final description based on user comments -----
+EDIT_DESCRIPTION_PROMPT = ChatPromptTemplate(
+    [
+        ("system", """
+You are an AI legal assistant tasked with editing a legal case description based on user feedback.
+
+Current Description:
+{final_description}
+
+User's Edit Request:
+{user_comment}
+
+Your task is to modify the description according to the user's request while maintaining:
+- Professional legal language
+- Accuracy of facts
+- Clear structure
+- Appropriate length
+
+Common edit requests might include:
+- Making it shorter/briefer
+- Making it more detailed
+- Adding specific information
+- Removing certain parts
+- Changing the tone or emphasis
+- Focusing on different aspects
+
+Apply the user's requested changes while preserving the core facts and professional tone.
+Output only the edited description.
+""")
+    ]
+)
+
 # Structured output format for question-asking
 STRUCTURED_QUESTION_RESPONSE_FORMAT = {
     "type": "object",
@@ -108,3 +141,10 @@ STRUCTURED_QUESTION_RESPONSE_FORMAT = {
     "required": ["reasoning", "questions", "is_ready"]
 }
 
+OPTIMIZE_OFFER_PROMPT = ChatPromptTemplate(
+    [
+        ("system", """
+
+""")
+    ]
+)
