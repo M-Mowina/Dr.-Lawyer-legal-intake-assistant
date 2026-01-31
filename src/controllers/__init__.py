@@ -4,3 +4,6 @@ from .document_parser import extract_text
 
 # Import summarization functions
 from .summarizer import summarize_text
+
+# Import process-file function
+from .process_file import process_uploaded_file

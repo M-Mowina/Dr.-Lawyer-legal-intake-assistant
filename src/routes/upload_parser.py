@@ -4,7 +4,7 @@ import tempfile
 import os
 from pathlib import Path
 
-upload_router = APIRouter(prefix="/api/v1", tags=["test"])
+upload_router = APIRouter(prefix="/api/v1", tags=["Utils"])
 
 @upload_router.post("/upload")
 async def upload_file(file: UploadFile = File(...)):

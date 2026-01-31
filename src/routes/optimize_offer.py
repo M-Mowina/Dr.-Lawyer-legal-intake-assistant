@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 offer_router = APIRouter(
     prefix="/api/v1",
-    tags=["api_v1"],
+    tags=["Lawyer's side"],
 )
 
 # ----- Optimize offer route -----

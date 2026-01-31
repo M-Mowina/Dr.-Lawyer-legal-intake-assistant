@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 refine_router = APIRouter(
     prefix="/api/v1",
-    tags=["api_v1"],
+    tags=["Utils"],
 )
 
 # ----- Optimize offer route -----
