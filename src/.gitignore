@@ -2,6 +2,7 @@
 src/studio 
 assets\Legal_intake.ipynb
 src\.langgraph_api
+assets\docling_extraction.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
