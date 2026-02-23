@@ -102,7 +102,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"offer\": \"I can take ur case for 1000 usd and insure u a 90% grante I will keep u out of jail\"\r\n}",
+          "raw": "{\r\n    \"offer\": \"السلام عليكم اقدر اتبنى قضيتك واضم بك انشاء الله اجيب لك حقك من الضباط اللي تعدو عليك وادفعهم غرامة. انشاءالله اتعابي بتكون 20% من قيمة الغرامة\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -110,9 +110,9 @@
           }
         },
         "url": {
-          "raw": "{{api}}/optimize_offer",
+          "raw": "{{hostinger}}/optimize_offer",
           "host": [
-            "{{api}}"
+            "{{hostinger}}"
           ],
           "path": [
             "optimize_offer"
@@ -128,7 +128,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"final_description\": \"## CLIENT INFORMATION\\n**Incident Date:** June 10, 2026\\n\\n---\\n\\n## FACTS AND CIRCUMSTANCES\\n\\n### Incident Description\\nThe client reports that while walking in a park with his wife, an unknown male individual approached them. According to the client's account, this person:\\n- Made physical contact with the client's wife\\n- Struck the client in the face\\n\\n### Injuries Sustained\\n- Facial injury resulting in swelling/bruising (client describes face as \\\"prozed\\\")\\n- Medical treatment sought at a pharmacy facility\\n\\n### Medical Documentation\\n- Treatment received from a pharmacy doctor\\n- The treating physician is available as a potential witness\\n- No formal medical records have been obtained or provided\\n- No documentation of the severity or extent of injuries is currently available\\n\\n### Parties Involved\\n- **Assailant:** Unknown male, described as a stranger\\n- **Witnesses:** Client's wife was present; the client indicates other people were in the vicinity but contact information was not obtained from them\\n- **Medical Witness:** Pharmacy doctor who provided treatment\\n\\n### Police Report Status\\nNo police report was filed at the time of the incident.\\n\\n---\\n\\n## LEGAL ISSUES IDENTIFIED\\n\\nThe following legal matters appear relevant to this situation:\\n- Potential criminal assault charges\\n- Potential battery claims\\n- Personal injury/civil compensation matters\\n- Evidence preservation and witness identification\\n- Medical documentation and damages quantification\\n\\n---\\n---\\n\\n\\n## CLIENT OBJECTIVES\\n\\nThe client has stated the following goals:\\n1. **Primary:** Criminal prosecution of the assailant (incarceration if possible)\\n2. **Secondary:** Civil compensation for damages sustained\\n\\n---\",\r\n    \"comments\": \"Remove the '## IMPORTANT DISCLAIMERS' section at the end of the document.\"\r\n}",
+          "raw": "{\r\n    \"final_description\": \"## CLIENT INFORMATION\\n**Incident Date:** June 10, 2026\\n\\n---\\n\\n## FACTS AND CIRCUMSTANCES\\n\\n### Incident Description\\nThe client reports that while walking in a park with his wife, an unknown male individual approached them. According to the client's account, this person:\\n- Made physical contact with the client's wife\\n- Struck the client in the face\\n\\n### Injuries Sustained\\n- Facial injury resulting in swelling/bruising (client describes face as \\\"prozed\\\")\\n- Medical treatment sought at a pharmacy facility\\n\\n### Medical Documentation\\n- Treatment received from a pharmacy doctor\\n- The treating physician is available as a potential witness\\n- No formal medical records have been obtained or provided\\n- No documentation of the severity or extent of injuries is currently available\\n\\n### Parties Involved\\n- **Assailant:** Unknown male, described as a stranger\\n- **Witnesses:** Client's wife was present; the client indicates other people were in the vicinity but contact information was not obtained from them\\n- **Medical Witness:** Pharmacy doctor who provided treatment\\n\\n### Police Report Status\\nNo police report was filed at the time of the incident.\\n\\n---\\n\\n## LEGAL ISSUES IDENTIFIED\\n\\nThe following legal matters appear relevant to this situation:\\n- Potential criminal assault charges\\n- Potential battery claims\\n- Personal injury/civil compensation matters\\n- Evidence preservation and witness identification\\n- Medical documentation and damages quantification\\n\\n---\\n---\\n\\n\\n## CLIENT OBJECTIVES\\n\\nThe client has stated the following goals:\\n1. **Primary:** Criminal prosecution of the assailant (incarceration if possible)\\n2. **Secondary:** Civil compensation for damages sustained\\n\\n---\",\r\n    \"comments\": \"Make it shorter\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -136,9 +136,9 @@
           }
         },
         "url": {
-          "raw": "{{api}}/refine_description",
+          "raw": "{{hostinger}}/refine_description",
           "host": [
-            "{{api}}"
+            "{{hostinger}}"
           ],
           "path": [
             "refine_description"
@@ -159,14 +159,14 @@
               "key": "file",
               "type": "file",
               "uuid": "9414b28c-4be7-4552-ade9-613be02a8bb7",
-              "value": null
+              "src": "/C:/Users/mohamed mowina/Downloads/LOI.html.pdf"
             }
           ]
         },
         "url": {
-          "raw": "{{api}}/upload",
+          "raw": "{{hostinger}}/upload",
           "host": [
-            "{{api}}"
+            "{{hostinger}}"
           ],
           "path": [
             "upload"
@@ -177,6 +177,22 @@
     },
     {
       "name": "Start Intake With File",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "curl -X POST \"http://localhost:8000/api/v1/intake/start/session123/file\" \\\r",
+              "  -H \"Content-Type: multipart/form-data\" \\\r",
+              "  -F \"request={\\\"initial_description\\\": \\\"I need help with this contract\\\"};type=application/json\" \\\r",
+              "  -F \"file=@contract.pdf\""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -185,27 +201,27 @@
           "formdata": [
             {
               "key": "initial_description",
-              "value": "I was going to sell my nursery but the other side laied in his information",
+              "value": "I was going to sell my nursery but the other side lied in his information",
               "type": "text",
               "uuid": "690eaf47-241b-4421-a79d-7474bea09221"
             },
             {
               "key": "file",
-              "value": "",
-              "type": "text",
-              "uuid": "b726161f-adfc-4e23-9fe9-e2433f99f7fa"
+              "type": "file",
+              "uuid": "b726161f-adfc-4e23-9fe9-e2433f99f7fa",
+              "src": "/C:/Users/mohamed mowina/Downloads/LOI.html.pdf"
             }
           ]
         },
         "url": {
-          "raw": "{{api}}/intake/start/70/file",
+          "raw": "{{hostinger}}/intake/start/96/file",
           "host": [
-            "{{api}}"
+            "{{hostinger}}"
           ],
           "path": [
             "intake",
             "start",
-            "70",
+            "96",
             "file"
           ]
         }
