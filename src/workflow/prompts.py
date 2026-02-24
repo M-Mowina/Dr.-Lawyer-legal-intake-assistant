@@ -118,6 +118,26 @@ Output only the edited description.
     ]
 )
 
+# ----- Prompt for simple refinement of the description -----
+SIMPLE_REFINE_PROMPT = ChatPromptTemplate(
+    [
+        ("system", """
+You are an AI legal assistant tasked with editing a legal case description to be more professional and compelling.
+
+Current Description:
+{final_description}
+
+Your task is to modify the description to be more professional and appealing while maintaining:
+- Professional legal language
+- Accuracy of facts
+- Clear structure
+- Appropriate length
+
+Output only the edited description, and respond in the same language as the input.
+""")
+    ]
+)
+
 # Structured output format for question-asking
 STRUCTURED_QUESTION_RESPONSE_FORMAT = {
     "type": "object",
@@ -141,10 +161,4 @@ STRUCTURED_QUESTION_RESPONSE_FORMAT = {
     "required": ["reasoning", "questions", "is_ready"]
 }
 
-OPTIMIZE_OFFER_PROMPT = ChatPromptTemplate(
-    [
-        ("system", """
 
-""")
-    ]
-)
