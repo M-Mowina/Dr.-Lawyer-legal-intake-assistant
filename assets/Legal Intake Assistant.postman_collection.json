@@ -227,6 +227,32 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "Simple Refine",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"description\": \"في حد ضربني فالشارع\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{api}}/simple_refine",
+          "host": [
+            "{{api}}"
+          ],
+          "path": [
+            "simple_refine"
+          ]
+        }
+      },
+      "response": []
     }
   ]
 }
