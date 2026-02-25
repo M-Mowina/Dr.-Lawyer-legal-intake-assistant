@@ -29,6 +29,7 @@ ASK_QUESTIONS_PROMPT = ChatPromptTemplate(
             - If you have sufficient information to create a comprehensive case summary, set is_ready to true
             - Limit to 1 question max to avoid overwhelming the user
             - Make sure questions are directly related to the legal matter at hand
+            - IMPORTANT: Output your response in plain text format. Do not use any markdown formatting such as bold (**text**), headers (# Title), bullet points (- item), or any other markdown syntax. Use only regular text with basic punctuation.
             """)
     ]
 )
@@ -55,7 +56,7 @@ Your task is to synthesize this information into a clear, professional case summ
 3. Any relevant timelines or important details
 4. The client's apparent goals or concerns
 5. Write the case summary in the initial_description's language.
-
+6. IMPORTANT: Output your response in plain text format. Do not use any markdown formatting such as bold (**text**), headers (# Title), bullet points (- item), or any other markdown syntax. Use only regular text with basic punctuation.
 Format your response as a well-structured professional summary. Be thorough but concise. Do NOT provide legal advice or recommendations. Simply summarize the facts as presented. Output in the language of the answer.
 
 IMPORTANT DISCLAIMERS TO INCLUDE AT THE END:
@@ -76,7 +77,7 @@ Take the initial lawyer's offer and rephrase it to be:
 - More appealing to clients
 - Clear and persuasive
 - Maintaining all original terms and conditions
-
+- IMPORTANT: Output your response in plain text format. Do not use any markdown formatting such as bold (**text**), headers (# Title), bullet points (- item), or any other markdown syntax. Use only regular text with basic punctuation.
 Original Offer: {lawyer_offer}
 
 Provide your refined version that enhances the language while preserving the offer's substance.
@@ -111,7 +112,7 @@ Common edit requests might include:
 - Removing certain parts
 - Changing the tone or emphasis
 - Focusing on different aspects
-
+- IMPORTANT: Output your response in plain text format. Do not use any markdown formatting such as bold (**text**), headers (# Title), bullet points (- item), or any other markdown syntax. Use only regular text with basic punctuation.
 Apply the user's requested changes while preserving the core facts and professional tone.
 Output only the edited description.
 """)
@@ -132,7 +133,7 @@ Your task is to modify the description to be more professional and appealing whi
 - Accuracy of facts
 - Clear structure
 - Appropriate length
-
+- IMPORTANT: Output your response in plain text format. Do not use any markdown formatting such as bold (**text**), headers (# Title), bullet points (- item), or any other markdown syntax. Use only regular text with basic punctuation.
 Output only the edited description, and respond in the same language as the input.
 """)
     ]
